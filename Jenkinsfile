@@ -15,26 +15,6 @@ pipeline {
 			}
 		}
 				
-		
-	 	stage('Production') {
-			when {
-			   env.BRANCH_NAME == 'maaster'	
-			}
-			steps {	
-			    parallel (
-				    'us-east-1' : {
-					  sh 'serverless deploy --stage production --region us-east-1'  
-					  sh 'serverless invoke --stage production --region us-east-1 --function hello'
-				    },
-				    'ap-southeast-2' : {
-					  sh 'serverless deploy --stage production --region ap-southeast-2'  
-					  sh 'serverless invoke --stage production --region ap-southeast-2 --function hello'  
-				    }
-				    
-		            )
-			}	
-		}
-		
 		stage('Teardown') {
 			steps {				
 				echo 'No need for DEV environment now, tear it down'
