@@ -1,6 +1,10 @@
 pipeline {
-	agent any	 
-	
+	agent {
+	    docker {
+	  		image 'node:alpine'
+	      	args '-u 0:0'
+	    }
+	}
 	stages {
 		stage('Unit test') {
 			steps {				
@@ -14,7 +18,7 @@ pipeline {
 				sh 'serverless invoke --stage dev --function hello'					
 			}
 		}
-				
+
 		stage('Teardown') {
 			steps {				
 				echo 'No need for DEV environment now, tear it down'
