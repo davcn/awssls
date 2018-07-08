@@ -6,6 +6,16 @@ pipeline {
 	    }
 	}
 	stages {
+
+		stage('prepare') {
+			steps {
+				sh '''
+					npm install -g serverless
+					npm install serverless-python-requirements
+				'''
+			}
+		}
+
 		stage('Unit test') {
 			steps {				
  			    sh 'serverless --help' // to ensure it is installed
