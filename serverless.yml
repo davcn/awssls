@@ -108,4 +108,4 @@ functions:
 
 custom:
   pythonRequirements:
-    dockerizePip: false
+    fileName: requirements.txt
