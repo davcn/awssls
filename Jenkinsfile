@@ -1,46 +1,25 @@
 pipeline {
 	agent {
-	    docker {
-	  		image 'base2/sls:latest'
-	    }
+		docker {
+			image 'node:alpine'
+			args '-u 0:0'
+		}
+	}
+	environment {
+		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+		AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 	}
 	stages {
-
-		stage('prepare') {
+		stage('Build') {
 			steps {
-				sh '''
-					npm install -g serverless
-					npm install serverless-python-requirements
-				'''
+				sh 'npm install'
 			}
 		}
-
-		stage('Unit test') {
-			steps {				
- 			    sh 'serverless --help' // to ensure it is installed
-			}
-		}			
-		
-		stage('Integration test') {
+		stage('Deploy') {
 			steps {
-				sh 'serverless deploy --stage dev'
-				sh 'serverless invoke --stage dev --function hello'					
+				sh 'npm install -g serverless'
+				sh 'serverless deploy'
 			}
 		}
-
-		stage('Teardown') {
-			steps {				
-				echo 'No need for DEV environment now, tear it down'
-				sh 'serverless remove --stage dev'	
-			}
-		}
-	 
-	 }
-	
-	
-	 environment {
-	 		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-			AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-	 }
-
+	}
 }
