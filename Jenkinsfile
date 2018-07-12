@@ -1,9 +1,6 @@
 pipeline {
 	agent {
-		docker {
-			image 'node:alpine'
-			args '-u 0:0'
-		}
+		dockerfile true
 	}
 	environment {
 		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
