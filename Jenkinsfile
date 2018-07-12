@@ -18,7 +18,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				sh 'npm install -g serverless'
-				sh 'npm install serverless-python-requirements'
+				sh 'serverless plugin install -n serverless-python-requirements'
 				sh 'serverless deploy'
 			}
 		}
