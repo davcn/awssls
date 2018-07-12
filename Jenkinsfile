@@ -18,6 +18,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				sh 'ls -la'
+				sh 'pip install virtualenv'
 				sh 'npm install -g serverless'
 				sh 'serverless plugin install -n serverless-python-requirements'
 				sh 'serverless deploy'
