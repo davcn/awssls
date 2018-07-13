@@ -11,4 +11,3 @@ RUN apt-get update -y && apt-get install -y screen
 
 RUN npm install
 RUN npm install -g serverless
-RUN serverless plugin install -n serverless-python-requirements
