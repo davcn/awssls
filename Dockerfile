@@ -9,5 +9,6 @@ RUN apt-get update -y && apt-get install -y python-dev python-pip && pip install
 # install other utils
 RUN apt-get update -y && apt-get install -y screen
 
-# install aws-cli
-RUN pip install awscli
+RUN npm install
+RUN npm install -g serverless
+RUN serverless plugin install -n serverless-python-requirements
