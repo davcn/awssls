@@ -58,8 +58,8 @@ plugins:
   - serverless-python-requirements
 
 functions:
-  hello:
-    handler: hello.handler
+  compute:
+    handler: compute.lambda_handler
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
