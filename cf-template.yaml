@@ -9,7 +9,6 @@ Resources:
               Principal:
                 Service: lambda.amazonaws.com
               Action: 'sts:AssumeRole'
-        Path: /
         Policies: 
         - 
           PolicyName: "root"
@@ -30,10 +29,10 @@ Resources:
       Runtime: python2.7
       Timeout: 10
       Handler: save_data.lambda_handler
-      Role: GetAtt LambdasRole.Arn
+      Role: Fn:GetAtt:LambdasRole.Arn
       Environment:
         Variables:
-            DB_TABLE_NAME: GetAtt myDynamoDBTable.Arn
+            DB_TABLE_NAME: Fn:GetAtt:myDynamoDBTable.Arn
             SNS_TOPIC: Ref MySNSTopic
   myDynamoDBTable: 
     Type: "AWS::DynamoDB::Table"
@@ -64,7 +63,7 @@ Resources:
   LambdaInvokePermission:
     Type: 'AWS::Lambda::Permission'
     Properties:
-      FunctionName: GetAtt Compute.Arn
+      FunctionName: Fn:GetAtt:Compute.Arn
       Action: 'lambda:InvokeFunction'
       Principal: sns.amazonaws.com
       SourceArn: Ref MySNSTopic
@@ -108,12 +107,12 @@ Resources:
       Runtime: python2.7
       Timeout: 10
       Handler: computeFn.lambda_handler
-      Role: GetAtt LambdasRole.Arn
+      Role: Fn:GetAtt:LambdasRole.Arn
       Environment:
         Variables:
-            DB_CHECK_TABLE_NAME: GetAtt ForecastDBTable.Arn
-            DB_RESULTS_TABLE_NAME: GetAtt ResultsDBTable.Arn
-            DB_SONDA_TABLE_NAME: GetAtt myDynamoDBTable.Arn
+            DB_CHECK_TABLE_NAME: Fn:GetAtt:ForecastDBTable.Arn
+            DB_RESULTS_TABLE_NAME: Fn:GetAtt:ResultsDBTable.Arn
+            DB_SONDA_TABLE_NAME: Fn:GetAtt:myDynamoDBTable.Arn
   CheckForecastAPI:
     Type: 'AWS::Lambda::Function'
     Properties:
@@ -124,7 +123,7 @@ Resources:
       Runtime: python2.7
       Timeout: 10
       Handler: checkAPI.lambda_handler
-      Role: GetAtt LambdasRole.Arn
+      Role: Fn:GetAtt:LambdasRole.Arn
       Environment:
         Variables:
-            DB_TABLE_NAME: GetAtt ForecastDBTable.Arn
+            DB_TABLE_NAME: Fn:GetAtt:ForecastDBTable.Arn
