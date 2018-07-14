@@ -1,25 +1,26 @@
 Resources:
   LambdasRole:
-      Type: 'AWS::IAM::Role'
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: 2012-10-17
-          Statement:
-            - Effect: Allow
-              Principal:
-                Service: lambda.amazonaws.com
-              Action: 'sts:AssumeRole'
-        Path: "/"
-        Policies: 
-        - 
-          PolicyName: "root"
-          PolicyDocument: 
-            Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: "Allow"
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /my/cust/path/
+      RoleName: LambdasRole
+      AssumeRolePolicyDocument:
+        Version: '2017'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: lambdaPolicy
+          PolicyDocument:
+            Version: '2017'
+            Statement:
+              - Effect: Allow
                 Action: "*"
                 Resource: "*"
+
   SaveNewData:
     Type: 'AWS::Lambda::Function'
     Properties:
