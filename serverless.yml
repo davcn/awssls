@@ -64,7 +64,7 @@ functions:
     handler: functions/compute.handler
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
+#    Check the event documentation for details  
     events:
 #      - http:
 #          path: users/create
@@ -97,7 +97,7 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-resources:
+#resources:
 #  Resources: ${file(cf-template.yaml)}
 #    NewResource:
 #      Type: AWS::S3::Bucket
