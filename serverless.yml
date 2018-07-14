@@ -57,10 +57,11 @@ provider:
 plugins:
   - serverless-python-requirements
 
-#functions:
-#  compute:
-#    handler: compute.lambda_handler
-
+functions:
+  # compute:
+  #  handler: compute.lambda_handler
+  hello:
+    handler: lambdas/hello.handler
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -95,8 +96,8 @@ plugins:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-resources:
-  Resources: ${file(cf-template.yaml)}
+#resources:
+#  Resources: ${file(cf-template.yaml)}
 #  Resources:
 #    NewResource:
 #      Type: AWS::S3::Bucket
