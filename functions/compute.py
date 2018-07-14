@@ -6,7 +6,7 @@ from boto3.dynamodb.conditions import Key, Attr
 import boto3
 import botocore
 
-def lambda_handler(event, context):
+def handler(event, context):
     recordId = event["recordId"]
     dataId = event["dataId"]
 
