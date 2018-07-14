@@ -9,6 +9,7 @@ Resources:
               Principal:
                 Service: lambda.amazonaws.com
               Action: 'sts:AssumeRole'
+        Path: "/"
         Policies: 
         - 
           PolicyName: "root"
