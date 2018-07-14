@@ -1,0 +1,130 @@
+Resources:
+  LambdasRole:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: lambda.amazonaws.com
+              Action: 'sts:AssumeRole'
+        Path: /
+        Policies: 
+        - 
+          PolicyName: "root"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+  SaveNewData:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: save_data
+      Code:
+        S3Bucket: davidcn-things
+        S3Key: save_data.zip
+      Runtime: python2.7
+      Timeout: 10
+      Handler: save_data.lambda_handler
+      Role: !GetAtt LambdasRole.Arn
+      Environment:
+        Variables:
+            DB_TABLE_NAME: !GetAtt myDynamoDBTable.Arn
+            SNS_TOPIC: !Ref MySNSTopic
+  myDynamoDBTable: 
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions: 
+      - 
+        AttributeName: "timestamp"
+        AttributeType: "S"
+      TableName: "real_info"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      KeySchema: 
+        - 
+          AttributeName: "timestamp"
+          KeyType: "HASH"
+  MySNSTopic: 
+    Type: "AWS::SNS::Topic"
+    Properties:
+      TopicName: "SampleTopic"
+      Subscription: 
+      - 
+        Endpoint: 
+          Fn::GetAtt:
+            - "Compute"
+            - "Arn"
+        Protocol: "lambda"
+  LambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt Compute.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref MySNSTopic
+  ForecastDBTable: 
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions:
+      - 
+        AttributeName: "timestamp"
+        AttributeType: "S"
+      TableName: "forecast_info"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      KeySchema: 
+      - 
+        AttributeName: "timestamp"
+        KeyType: "HASH"
+  ResultsDBTable: 
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions: 
+      - 
+        AttributeName: "id"
+        AttributeType: "S"
+      TableName: "results_info"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+      KeySchema: 
+      - 
+        AttributeName: "id"
+        KeyType: "HASH"
+  Compute:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: compute_fn
+      Code:
+        S3Bucket: davidcn-things
+        S3Key: computeFn.zip
+      Runtime: python2.7
+      Timeout: 10
+      Handler: computeFn.lambda_handler
+      Role: !GetAtt LambdasRole.Arn
+      Environment:
+        Variables:
+            DB_CHECK_TABLE_NAME: !GetAtt ForecastDBTable.Arn
+            DB_RESULTS_TABLE_NAME: !GetAtt ResultsDBTable.Arn
+            DB_SONDA_TABLE_NAME: !GetAtt myDynamoDBTable.Arn
+  CheckForecastAPI:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: checkForecastAPI
+      Code:
+        S3Bucket: davidcn-things
+        S3Key: checkAPI.zip
+      Runtime: python2.7
+      Timeout: 10
+      Handler: checkAPI.lambda_handler
+      Role: !GetAtt LambdasRole.Arn
+      Environment:
+        Variables:
+            DB_TABLE_NAME: !GetAtt ForecastDBTable.Arn
