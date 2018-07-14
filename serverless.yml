@@ -96,7 +96,7 @@ plugins:
 
 # you can add CloudFormation resource templates here
 resources:
-  Resources: ${file(template.yaml)}
+  Resources: ${file(cf-template.yaml)}
 #  Resources:
 #    NewResource:
 #      Type: AWS::S3::Bucket
