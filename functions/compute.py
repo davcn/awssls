@@ -2,17 +2,17 @@ import os
 import uuid
 import decimal
 from contextlib import closing
-from dynamodb import findById
-from dynamodb import getTable
 from boto3.dynamodb.conditions import Key, Attr
+import boto3
+import botocore
 
 def lambda_handler(event, context):
     recordId = event["recordId"]
     dataId = event["dataId"]
 
     # Retrieving information about the sonda from DynamoDB table
-    dataItem  = dynamodb.findById('dataTable', recordId)
-    checkItem = dynamodb.findById('checkTable', dataId)
+    dataItem  = findById('dataTable', recordId)
+    checkItem = findById('checkTable', dataId)
     
     sondaSpeed = dataItem["Items"][0]["speed"]
     checkSpeed = checkItem["Items"][0]["speed"]
@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     
     #Creating new record in DynamoDB table
     id = str(uuid.uuid4())
-    table = dynamodb.getTable('resultsTable')
+    table = getTable('resultsTable')
     table.put_item(
       Item={
         'id' : id,
@@ -34,5 +34,13 @@ def lambda_handler(event, context):
 def calc(sonda, real):
     return sonda * real * decimal.Decimal(10)
 
+def getDynamoResource():
+    return boto3.resource('dynamodb')
+
+def getTable(tableName):
+    return getDynamoResource().Table(tableName)
+
+def findById(tableName, id):
+    return getTable(tableName).query(KeyConditionExpression=Key('id').eq(id))
 
 
