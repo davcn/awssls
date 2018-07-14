@@ -71,16 +71,7 @@ functions:
 #          method: get
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
-      - sns:
-          arn:
-            Fn::Join:
-              - ""
-              - - "arn:aws:sns:"
-                - Ref: "AWS::Region"
-                - ":"
-                - Ref: "AWS::AccountId"
-                - ":SampleTopic"
-          topicName: SampleTopic
+      - sns: ${self:custom.snsTopicName}
 
 #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
 #      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
@@ -120,3 +111,4 @@ resources:
 custom:
   pythonRequirements:
     fileName: requirements.txt
+  snsTopicName: testTopic
