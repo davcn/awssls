@@ -1,10 +1,7 @@
-import os
 import uuid
 import decimal
-from contextlib import closing
 from boto3.dynamodb.conditions import Key, Attr
 import boto3
-import botocore
 
 def handler(event, context):
     recordId = event["recordId"]
