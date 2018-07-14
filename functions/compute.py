@@ -2,7 +2,8 @@ import os
 import uuid
 import decimal
 from contextlib import closing
-import dynamodb
+from dynamodb import findById
+from dynamodb import getTable
 from boto3.dynamodb.conditions import Key, Attr
 
 def lambda_handler(event, context):
