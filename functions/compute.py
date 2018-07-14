@@ -28,6 +28,7 @@ def handler(event, context):
         'speed' : result
       }
     )
+    return result
 
 
 
