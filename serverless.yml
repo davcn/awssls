@@ -26,11 +26,6 @@ provider:
   region: eu-west-1
 
 # you can add statements to the Lambda function's IAM Role here
-  lambdasRole:
-    - Effect: "Allow"
-      Action: "*"
-      Resource:
-        - "Fn::GetAtt": [ ${self:custom.dataTable}, Arn ]
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
@@ -65,7 +60,7 @@ functions:
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details  
-    role: lambdasRole
+    role: myCustRole0
     events:
 #      - http:
 #          path: users/create
@@ -120,3 +115,6 @@ custom:
 resources:
   # DynamoDB
   - ${file(resources/dynamodb.yml)}
+  # Roles
+  - ${file(resources/roles.yml)}
+  
