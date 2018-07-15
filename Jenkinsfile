@@ -12,6 +12,11 @@ pipeline {
 				sh 'echo build'
 			}
 		}
+		stage('Unit Test') {
+			steps {
+				sh 'pytest functions/test_compute.py'
+			}
+		}
 		stage('Prepare deploy') {
 			steps {
 				sh 'serverless plugin install -n serverless-python-requirements'
