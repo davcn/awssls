@@ -1,0 +1,40 @@
+Resources:
+  dataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.dataTable}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  checkTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.checkTable}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  resultsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.resultsTable}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

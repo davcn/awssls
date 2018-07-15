@@ -29,7 +29,8 @@ provider:
   lambdasRole:
     - Effect: "Allow"
       Action: "*"
-      Resource: "*"
+      Resource:
+        - "Fn::GetAtt": [ ${self:custom.dataTable}, Arn ]
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
@@ -112,3 +113,10 @@ custom:
   pythonRequirements:
     fileName: requirements.txt
   snsTopicName: testTopic
+  dataTable: dataTable
+  checkTable: checkTable
+  resultsTable: resultsTable
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb.yml)}
