@@ -8,6 +8,4 @@ RUN apt-get update -y && apt-get install -y python-dev python-pip && pip install
 
 # install serverless
 RUN npm install -g serverless
-RUN serverless plugin install -n serverless-python-requirements
-#RUN npm install
 
