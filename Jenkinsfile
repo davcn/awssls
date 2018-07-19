@@ -25,7 +25,22 @@ pipeline {
 		}
 		stage('Deploy') {
 			steps {
-				sh 'serverless deploy'
+				sh 'serverless deploy --stage pre-dev'
+			}
+		}
+		stage('Integration Test') {
+			steps {
+				sh 'echo build'
+			}
+		}
+		stage('Remove Deploy') {
+			steps {
+				sh 'serverless remove --stage pre-dev'
+			}
+		}
+		stage('Update Deploy') {
+			steps {
+				sh 'serverless deploy --stage dev'
 			}
 		}
 	}
